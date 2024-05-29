@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Đặt hàng</title>
+</head>
+<body>
+<h1>Đặt hàng</h1>
+<form action="/submit-order" method="post">
+  <input type="hidden" name="productId" th:value="${product.id}">
+  <input type="hidden" name="quantity" th:value="${quantity}">
+  <div>
+    <label for="name">Tên:</label>
+    <input type="text" id="name" name="name" required>
+  </div>
+  <div>
+    <label for="address">Địa chỉ:</label>
+    <input type="text" id="address" name="address" required>
+  </div>
+  <div>
+    <label for="phone">Số điện thoại:</label>
+    <input type="text" id="phone" name="phone" required>
+  </div>
+  <button type="submit">Gửi đơn hàng</button>
+</form>
+</body>
+</html>

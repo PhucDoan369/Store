@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cửa hàng</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $(".add-to-cart-form, .quick-order-form").submit(function(event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của form
+                var form = $(this);
+                var actionUrl = form.attr('action');
+                var formData = form.serialize();
+
+                $.post(actionUrl, formData, function(response) {
+                    if (response.message) {
+                        $("#message").text(response.message).fadeIn().delay(3000).fadeOut();
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>Danh sách sản phẩm</h1>
+<ul>
+    <li th:each="product : ${products}">
+        <p><strong th:text="${product.name}">Product Name</strong></p>
+        <p th:text="${product.description}">Product Description</p>
+        <p th:text="${product.price}">Product Price</p>
+
+        <!-- Form thêm vào giỏ hàng -->
+        <form th:action="@{/add-to-cart/{id}(id=${product.id})}" method="post" class="add-to-cart-form">
+            <label for="quantity">Số lượng:</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1">
+            <button type="submit">Thêm vào giỏ</button>
+        </form>
+
+        <!-- Form đặt hàng nhanh với số lượng mặc định là 1 -->
+        <form th:action="@{/add-to-cart/{id}(id=${product.id})}" method="post" class="quick-order-form">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit">Đặt hàng</button>
+        </form>
+    </li>
+</ul>
+<a href="/cart">Xem giỏ hàng</a>
+<div id="message"></div>
+</body>
+</html>
