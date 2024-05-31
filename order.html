@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đơn hàng của bạn</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center my-4">Đơn hàng của bạn</h1>
+
+    <form id="order-form">
+        <div class="form-group">
+            <label for="customer-name">Tên khách hàng</label>
+            <input type="text" class="form-control" id="customer-name" required>
+        </div>
+        <div class="form-group">
+            <label for="customer-phone">Số điện thoại</label>
+            <input type="text" class="form-control" id="customer-phone" required>
+        </div>
+        <div class="form-group">
+            <label for="customer-address">Địa chỉ</label>
+            <input type="text" class="form-control" id="customer-address" required>
+        </div>
+
+        <h2 class="my-4">Đơn hàng của bạn</h2>
+        <ul class="list-group" id="order-summary">
+            <!-- Order summary will be inserted here dynamically -->
+        </ul>
+        <div class="text-right mt-2">
+            <h4>Tổng: <span id="total-price">0 VNĐ</span></h4>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Xác nhận đơn hàng</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cart = JSON.parse(localStorage.getItem('cart'));
+        const orderSummary = document.getElementById('order-summary');
+        let totalPrice = 0;
+
+        cart.forEach(item => {
+            const orderItem = document.createElement('li');
+            orderItem.className = 'list-group-item';
+            orderItem.innerText = `${item.description} - ${item.price} VNĐ x ${item.quantity}`;
+            orderSummary.appendChild(orderItem);
+
+            totalPrice += item.price * item.quantity;
+        });
+
+        document.getElementById('total-price').innerText = `${totalPrice} VNĐ`;
+
+        document.getElementById('order-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            const address = document.getElementById('customer-address').value;
+
+            // Gửi thông tin đơn hàng đến bot Telegram
+            const token = '7003091232:AAH_e26ZNI81g8t4ZlQ5PKIuRI93p0Mv3hs';
+            const chatId = '6549625165';
+            const message = `Đơn hàng mới từ ${name}\nSĐT: ${phone}\nĐịa chỉ: ${address}\n\nSản phẩm:\n` + 
+                cart.map(item => `${item.description} - ${item.price} VNĐ x ${item.quantity}`).join('\n') +
+                `\n\nTổng cộng: ${totalPrice} VNĐ`;
+
+            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert('Đơn hàng của bạn đã được xác nhận và gửi đến bot Telegram!');
+                    localStorage.removeItem('cart');
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Đã xảy ra lỗi khi gửi đơn hàng đến bot Telegram.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã xảy ra lỗi khi gửi đơn hàng đến bot Telegram.');
+            });
+        });
+    });
+</script>
+</body>
+</html>

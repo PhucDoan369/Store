@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple E-commerce Website</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Thêm kiểu cho mỗi góc màn hình */
+        .corner-decor {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+        }
+
+        .top-left {
+            top: 0;
+            left: 0;
+        }
+
+        .top-right {
+            top: 0;
+            right: 0;
+            transform: rotate(90deg);
+        }
+
+        .bottom-left {
+            bottom: 0;
+            left: 0;
+            transform: rotate(-90deg);
+        }
+
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center my-4 luxury-title">LUXURY VICTORY</h1>
+
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <img src="images/1.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="images/2.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="images/3.jpg" style="width:100%">
+        </div>
+    </div>
+
+    <br>
+
+    <div style="text-align:center">
+        <span class="dot"></span> 
+        <span class="dot"></span> 
+        <span class="dot"></span> 
+    </div>
+
+    <div class="row justify-content-center" id="products">
+        <!-- Products will be inserted here dynamically -->
+    </div>
+
+    <h2 class="text-center my-4">Shopping Cart</h2>
+    <ul class="list-group" id="cart">
+        <!-- Cart items will be inserted here dynamically -->
+    </ul>
+    <div class="text-center mt-2">
+        <h4>Total: <span id="total-price">$0</span></h4>
+    </div>
+    <div class="text-center mt-4">
+        <button class="btn btn-primary" id="checkout">Checkout</button>
+    </div>
+</div>
+<br>
+<h1></h1>
+<!-- Hình ảnh hoa văn cho mỗi góc màn hình -->
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-left">
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-right">
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-left">
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-right">
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="script.js"></script>
+
+<script>
+    let slideIndex = 0;
+    showSlides();
+    function showSlides() {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";  
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1}    
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "block";  
+        dots[slideIndex-1].className += " active";
+        setTimeout(showSlides, 2000); // Change image every 2 seconds
+    }
+</script>
+</body>
+</html>
