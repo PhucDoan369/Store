@@ -1,5 +1,6 @@
 body {
     padding-top: 20px;
+    background-color: #f2eeee;
 }
 
 .luxury-title {
@@ -9,8 +10,25 @@ body {
       margin-top: 50px; /* Dịch lên trên một chút */
   }
 
+  .giohang {
+    font-family: 'Playfair Display', serif; /* Sử dụng font chữ Playfair Display từ Google Fonts */
+      font-size: 30px;
+      color: #000000; /* Màu đen */
+      margin-top: 50px; /* Dịch lên trên một chút */
+  }
+  .thanhtoan {
+    font-family: 'Playfair Display', serif; /* Sử dụng font chữ Playfair Display từ Google Fonts */
+      font-size: 25px;
+      color: #000000; /* Màu đen */
+      margin-top: 50px; /* Dịch lên trên một chút */
+  }
+  .tx{
+    font-family: 'Playfair Display', serif;
+  }
+
+
 .product-card {
-    border: 1px solid #5418ed;
+    border: 1px solid #bda2ff;
     border-radius: 5px;
     padding: 10px;
     margin: 10px;
@@ -19,7 +37,7 @@ body {
 .product-img {
     width: 100%;
     height: auto;
-    border-radius: 15px; /* Bo tròn góc của slideshow */
+    
 }
 
 .product-details {
@@ -30,15 +48,15 @@ body {
 body {font-family: Verdana, sans-serif;}
 .mySlides {
     display: none;
-    height: 400px;  
-    border-radius: 15px; /* Bo tròn góc của slideshow */
+    height: 350px;  
+    
 }
 img {vertical-align: middle;
-    border-radius: 15px; /* Bo tròn góc của slideshow */}
+   }
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 500px;
+  max-width: 600px;
   position: relative;
   margin: auto;
 }
@@ -81,12 +99,12 @@ img {vertical-align: middle;
 /* Fading animation */
 .fade {
   animation-name: fade;
-  animation-duration: 2.5s;
+  animation-duration: 2.0s;
 }
 
 @keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
+  from {opacity: .5} 
+  to {opacity: 8}
 }
 
 /* On smaller screens, decrease text size */
@@ -99,3 +117,20 @@ body {font-family: Arial, Helvetica, sans-serif;}
 .text {
     font-family: 'Roboto', sans-serif; 
 }
+
+.infor {
+  font-weight: bold;
+  font-size:16px;
+  margin-top: -18px;
+}
+p{
+  margin-top: -18px;
+  font-size: 15px;
+}
+
+.prod {
+  font-weight: bold;
+  font-size:16px;
+  margin-top: 10px;
+}
+

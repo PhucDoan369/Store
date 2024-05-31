@@ -6,11 +6,46 @@
     <title>Đơn hàng của bạn</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Thêm kiểu cho mỗi góc màn hình */
+        .corner-decor {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+        }
+
+        .top-left {
+            top: 0;
+            left: 0;
+        }
+
+        .top-right {
+            top: 0;
+            right: 0;
+            transform: rotate(90deg);
+        }
+
+        .bottom-left {
+            bottom: 0;
+            left: 0;
+            transform: rotate(-90deg);
+        }
+
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            transform: rotate(180deg);
+        }
+    </style>
 </head>
 <body>
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-left">
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-right">
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-left">
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-right">
 
-<div class="container">
-    <h1 class="text-center my-4">Đơn hàng của bạn</h1>
+<div class="container tx">
+    <h1 class="text-center giohang"> Đơn hàng của bạn </h1>
 
     <form id="order-form">
         <div class="form-group">
@@ -25,35 +60,44 @@
             <label for="customer-address">Địa chỉ</label>
             <input type="text" class="form-control" id="customer-address" required>
         </div>
-
-        <h2 class="my-4">Đơn hàng của bạn</h2>
-        <ul class="list-group" id="order-summary">
-            <!-- Order summary will be inserted here dynamically -->
-        </ul>
-        <div class="text-right mt-2">
-            <h4>Tổng: <span id="total-price">0 VNĐ</span></h4>
-        </div>
-
-        <button type="submit" class="btn btn-primary mt-4">Xác nhận đơn hàng</button>
+        <table>
+                <tr>
+                    <ul class="list-group" id="order-summary">
+                        <!-- Order summary will be inserted here dynamically -->
+                    </ul>
+                </tr>
+                <tr>
+                    <div class="text-right mt-2">
+                        <h5>Tổng: <span id="total-price">0 VNĐ</span></h5>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Xác nhận đơn hàng</button>
+                </tr>
+                <table>
+  
     </form>
+    
 </div>
 
 <script>
+    function formatVND(amount) {
+        return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-        const cart = JSON.parse(localStorage.getItem('cart'));
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
         const orderSummary = document.getElementById('order-summary');
         let totalPrice = 0;
 
         cart.forEach(item => {
             const orderItem = document.createElement('li');
             orderItem.className = 'list-group-item';
-            orderItem.innerText = `${item.description} - ${item.price} VNĐ x ${item.quantity}`;
+            orderItem.innerText = `${item.description} - ${formatVND(item.price)} x ${item.quantity}`;
             orderSummary.appendChild(orderItem);
 
             totalPrice += item.price * item.quantity;
         });
 
-        document.getElementById('total-price').innerText = `${totalPrice} VNĐ`;
+        document.getElementById('total-price').innerText = formatVND(totalPrice);
 
         document.getElementById('order-form').addEventListener('submit', (event) => {
             event.preventDefault();
@@ -62,12 +106,11 @@
             const phone = document.getElementById('customer-phone').value;
             const address = document.getElementById('customer-address').value;
 
-            // Gửi thông tin đơn hàng đến bot Telegram
             const token = '7003091232:AAH_e26ZNI81g8t4ZlQ5PKIuRI93p0Mv3hs';
             const chatId = '6549625165';
             const message = `Đơn hàng mới từ ${name}\nSĐT: ${phone}\nĐịa chỉ: ${address}\n\nSản phẩm:\n` + 
-                cart.map(item => `${item.description} - ${item.price} VNĐ x ${item.quantity}`).join('\n') +
-                `\n\nTổng cộng: ${totalPrice} VNĐ`;
+                cart.map(item => `${item.description} - ${formatVND(item.price)} x ${item.quantity}`).join('\n') +
+                `\n\nTổng cộng: ${formatVND(totalPrice)}`;
 
             fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
                 method: 'POST',
@@ -82,16 +125,16 @@
             .then(response => response.json())
             .then(data => {
                 if (data.ok) {
-                    alert('Đơn hàng của bạn đã được xác nhận và gửi đến bot Telegram!');
+                    alert('Đơn hàng của bạn đã được xác nhận và gửi đi thành công!');
                     localStorage.removeItem('cart');
                     window.location.href = 'index.html';
                 } else {
-                    alert('Đã xảy ra lỗi khi gửi đơn hàng đến bot Telegram.');
+                    alert('Đã xảy ra lỗi khi gửi đơn hàng!');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Đã xảy ra lỗi khi gửi đơn hàng đến bot Telegram.');
+                alert('Đã xảy ra lỗi khi gửi đơn hàng!');
             });
         });
     });

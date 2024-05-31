@@ -1,21 +1,25 @@
 const products = [
     {
         id: 1,
-        image: 'https://via.placeholder.com/150',
-        description: 'Product 1 Description',
-        price: 10,
+        image: 'images/1.jpg',
+        description: 'Mắc áo 5 móc INOX 304',
+        price: 300000,
         quantity: 1
     },
     {
         id: 2,
-        image: 'https://via.placeholder.com/150',
-        description: 'Product 2 Description',
-        price: 15,
+        image: 'images/2.jpg',
+        description: 'Mắc áo 7 móc INOX 304',
+        price: 330000,
         quantity: 1
     }
 ];
 
 let cart = [];
+
+function formatVND(amount) {
+    return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+}
 
 function renderProducts() {
     const productsContainer = document.getElementById('products');
@@ -25,10 +29,10 @@ function renderProducts() {
         productCard.innerHTML = `
             <img src="${product.image}" class="product-img" alt="${product.description}">
             <div class="product-details">
-                <h5>${product.description}</h5>
-                <p>$${product.price}</p>
+                <p class="prod">${product.description}</p>
+                <p>${formatVND(product.price)}</p>
                 <input type="number" min="1" value="${product.quantity}" id="quantity-${product.id}" class="form-control mb-2">
-                <button class="btn btn-success" onclick="addToCart(${product.id})">Add to Cart</button>
+                <button class="btn btn-success" onclick="addToCart(${product.id})">Thêm vào giỏ hàng</button>
             </div>
         `;
         productsContainer.appendChild(productCard);
@@ -44,10 +48,10 @@ function renderCart() {
         const cartItem = document.createElement('li');
         cartItem.className = 'list-group-item d-flex justify-content-between align-items-center';
         cartItem.innerHTML = `
-            ${item.description} - $${item.price} x 
+            ${item.description} - ${formatVND(item.price)} x 
             <input type="number" min="1" value="${item.quantity}" class="form-control quantity-input" data-index="${index}" onchange="updateQuantity(${index}, this.value)">
             <div class="cart-actions">
-                <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Remove</button>
+                <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Thao tác</button>
             </div>
         `;
         cartContainer.appendChild(cartItem);
@@ -55,7 +59,7 @@ function renderCart() {
         totalPrice += item.price * item.quantity;
     });
 
-    document.getElementById('total-price').innerText = `$${totalPrice}`;
+    document.getElementById('total-price').innerText = formatVND(totalPrice);
 }
 
 function addToCart(productId) {
@@ -95,6 +99,3 @@ $(document).ready(function(){
         interval: 2000 // milliseconds
     });
 });
-
-
-
