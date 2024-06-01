@@ -36,6 +36,20 @@
             right: 0;
             transform: rotate(180deg);
         }
+
+        /* Kiểu dáng cho thông báo */
+        .confirmation-message, .error-message {
+            background-color: #dff0d8;
+            color: #3c763d;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        .error-message {
+            background-color: #f2dede;
+            color: #a94442;
+        }
     </style>
 </head>
 <body>
@@ -61,21 +75,19 @@
             <input type="text" class="form-control" id="customer-address" required>
         </div>
         <table>
-                <tr>
-                    <ul class="list-group" id="order-summary">
-                        <!-- Order summary will be inserted here dynamically -->
-                    </ul>
-                </tr>
-                <tr>
-                    <div class="text-right mt-2">
-                        <h5>Tổng: <span id="total-price">0 VNĐ</span></h5>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-4">Xác nhận đơn hàng</button>
-                </tr>
-                <table>
-  
+            <tr>
+                <ul class="list-group" id="order-summary">
+                    <!-- Order summary will be inserted here dynamically -->
+                </ul>
+            </tr>
+            <tr>
+                <div class="text-right mt-2">
+                    <h5>Tổng: <span id="total-price">0 VNĐ</span></h5>
+                </div>
+                <button type="submit" class="btn btn-primary mt-4">Xác nhận đơn hàng</button>
+            </tr>
+        </table>
     </form>
-    
 </div>
 
 <script>
@@ -108,9 +120,9 @@
 
             const token = '7003091232:AAH_e26ZNI81g8t4ZlQ5PKIuRI93p0Mv3hs';
             const chatId = '6549625165';
-            const message = `Đơn hàng mới từ ${name}\nSĐT: ${phone}\nĐịa chỉ: ${address}\n\nSản phẩm:\n` + 
+            const message = `---------------- \nĐơn hàng mới từ: ${name}\nSĐT: ${phone}\nĐịa chỉ: ${address}\n\nSản phẩm:\n` +
                 cart.map(item => `${item.description} - ${formatVND(item.price)} x ${item.quantity}`).join('\n') +
-                `\n\nTổng cộng: ${formatVND(totalPrice)}`;
+                `\n\nTổng cộng: ${formatVND(totalPrice)}\n ---------------- \n`;
 
             fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
                 method: 'POST',
@@ -125,16 +137,34 @@
             .then(response => response.json())
             .then(data => {
                 if (data.ok) {
-                    alert('Đơn hàng của bạn đã được xác nhận và gửi đi thành công!');
+                    // Hiển thị thông báo xác nhận trên trang
+                    const confirmationMessage = document.createElement('p');
+                    confirmationMessage.className = 'confirmation-message';
+                    confirmationMessage.innerText = 'Đơn hàng của bạn đã được xác nhận và gửi đi thành công!';
+                    document.body.appendChild(confirmationMessage);
+
+                    // Xóa giỏ hàng khỏi localStorage
                     localStorage.removeItem('cart');
-                    window.location.href = 'index.html';
+
+                    // Điều hướng trở lại trang chủ sau khi xác nhận đơn hàng
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000); // Chuyển hướng sau 3 giây
                 } else {
-                    alert('Đã xảy ra lỗi khi gửi đơn hàng!');
+                    // Hiển thị thông báo lỗi trên trang
+                    const errorMessage = document.createElement('p');
+                    errorMessage.className = 'error-message';
+                    errorMessage.innerText = 'Đã xảy ra lỗi khi gửi đơn hàng!';
+                    document.body.appendChild(errorMessage);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Đã xảy ra lỗi khi gửi đơn hàng!');
+                // Hiển thị thông báo lỗi trên trang
+                const errorMessage = document.createElement('p');
+                errorMessage.className = 'error-message';
+                errorMessage.innerText = 'Đã xảy ra lỗi khi gửi đơn hàng!';
+                document.body.appendChild(errorMessage);
             });
         });
     });

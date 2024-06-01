@@ -1,16 +1,16 @@
 const products = [
     {
         id: 1,
-        image: 'images/1.jpg',
+        image: 'images/5m.jpg',
         description: 'Mắc áo 5 móc INOX 304',
         price: 300000,
         quantity: 1
     },
     {
         id: 2,
-        image: 'images/2.jpg',
+        image: 'images/7m.jpg',
         description: 'Mắc áo 7 móc INOX 304',
-        price: 330000,
+        price: 350000,
         quantity: 1
     }
 ];
@@ -30,8 +30,10 @@ function renderProducts() {
             <img src="${product.image}" class="product-img" alt="${product.description}">
             <div class="product-details">
                 <p class="prod">${product.description}</p>
-                <p>${formatVND(product.price)}</p>
-                <input type="number" min="1" value="${product.quantity}" id="quantity-${product.id}" class="form-control mb-2">
+                <p class="colorMM">${formatVND(product.price)}</p>
+                <div class="soluong-container">
+                <input type="number" min="1" value="${product.quantity}" id="quantity-${product.id}" class="form-control soluong">
+                </div>
                 <button class="btn btn-success" onclick="addToCart(${product.id})">Thêm vào giỏ hàng</button>
             </div>
         `;
@@ -59,7 +61,7 @@ function renderCart() {
         totalPrice += item.price * item.quantity;
     });
 
-    document.getElementById('total-price').innerText = formatVND(totalPrice);
+    document.getElementById('total-price').innerText = formatVND(totalPrice);   
 }
 
 function addToCart(productId) {

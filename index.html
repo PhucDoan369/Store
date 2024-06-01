@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title >Simple E-commerce Website</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Thêm kiểu cho mỗi góc màn hình */
+        .mySlides {display:none;}
         .corner-decor {
             position: fixed;
             width: 100px;
@@ -39,11 +41,9 @@
     </style>
 </head>
 <body>
-
 <div class="container">
     <h1 class="text-center my-4 luxury-title">LUXURY VICTORY</h1>
-
-    <div class="slideshow-container">
+    <!-- <div class="slideshow-container">
         <div class="mySlides fade">
             <img src="images/1.jpg" style="width:100%">
         </div>
@@ -54,15 +54,18 @@
             <img src="images/3.jpg" style="width:100%">
         </div>
     </div>
-
-    <br>
-
     <div style="text-align:center">
         <span class="dot"></span> 
         <span class="dot"></span> 
         <span class="dot"></span> 
     </div>
-
+    <br> -->
+    <div class="slideshow-container w3-content w3-section" style="max-width:1000px">
+        <img class="mySlides" src="images/1.jpg" style="width:100%">
+        <img class="mySlides" src="images/2.jpg" style="width:100%">
+        <img class="mySlides" src="images/3.jpg" style="width:100%">
+      </div>
+    <h4 class="text-center sanpham" >Sản Phẩm</h4>
     <div class="row justify-content-center" id="products">
         <!-- Products will be inserted here dynamically -->
     </div>
@@ -80,7 +83,7 @@
 </div>
 <div class="text-center" >
 <br><br><p class="infor"> Thông tin chi tiết liên hệ  </p>
-<p> Số điện thoại: 0915606794 hoặc Zalo: 0915606794 </p>
+<p> Số điện thoại: <a href="tel:+84915606794">0915 606 794</a> hoặc Zalo: 0915606794 </p>
 <p > Địa chỉ: Tổ dân phố 15, Khu công nghiệp Vân Chàng, Nam Giang, Nam Trực, Nam Định.</p>
 </div>
 <h1></h1>
@@ -90,13 +93,25 @@
 <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-right">
 <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-left">
 <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-right">
-
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="script.js"></script>
-
 <script>
+    var myIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  myIndex++;
+  if (myIndex > x.length) {myIndex = 1}    
+  x[myIndex-1].style.display = "block";  
+  setTimeout(carousel, 2000); // Change image every 2 seconds
+}
     let slideIndex = 0;
     showSlides();
     function showSlides() {
